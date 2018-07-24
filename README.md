@@ -1,27 +1,149 @@
-# MobDateSelectorTest
+# angular 使用mob-date-picker教程
+## 1. 安装
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+```
+npm i mob-date-selector --save-dev
+```
 
-## Development server
+## 2. 引入css
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+> angular.json
+>
 
-## Code scaffolding
+```json
+"styles": [
+	"node_modules/ng-zorro-antd/src/ng-zorro-antd.css",
+	"node_modules/mob-date-selector/index.css",
+	"src/styles.scss"
+],
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## 3. html
 
-## Build
+> test.component.html
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```html
+<form nz-form [formGroup]="timeForm" nzLayout="horizontal">
+    <nz-form-item>
+        <nz-form-control>
+            <input id="stime-picker" nz-input placeholder="开始时间" formControlName="stime" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <input id="etime-picker" nz-input placeholder="结束时间" formControlName="etime" />
+        </nz-form-control>
+    </nz-form-item>
+</form>
+<!-- 多个input需要对应多个Container -->
+<div id="sdate-picker"></div>
+<div id="edate-picker"></div>
+```
 
-## Running unit tests
+## 4. ts
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+> test.component.ts
 
-## Running end-to-end tests
+```js
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import DateSelector from 'mob-date-selector';
+import * as dateFns from 'date-fns';
+@Component({
+  selector: 'app-test',
+  templateUrl: './test.component.html',
+  styleUrls: ['./test.component.scss']
+})
+export class TestComponent implements OnInit, AfterViewInit {
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+  timeForm: FormGroup; // 定义表单
 
-## Further help
+  ngOnInit() {
+    // 定义formControl
+    /*
+       使用插件时，input绑定了touchstart事件，
+       然而点击时有可能会使input聚焦，因此禁用input
+    */
+    this.timeForm = this.fb.group({
+      stime: [{ value: '', disabled: true }],
+      etime: [{ value: '', disabled: true }]
+    });
+  }
+  ngAfterViewInit() {
+    this.createPicker();
+  }
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+  createPicker() {
+    const stimePicker = new DateSelector({
+      input: 'stime-picker',
+      container: 'sdate-picker',
+      type: 1,
+      param: [1, 1, 1, 1, 1],
+      beginTime: [],
+      endTime: [],
+      recentTime: [],
+      success: (arr1) => {
+        const res = this.getTimeString(arr1);
+        this.timeForm.get('stime').setValue(res);
+      }
+    });
+    
+    const etimePicker = new DateSelector({
+      input: 'etime-picker',
+      container: 'edate-picker',
+      type: 1,
+      param: [1, 1, 1, 1, 1],
+      beginTime: [],
+      endTime: [],
+      recentTime: [],
+      success: (arr1) => {
+        const res = this.getTimeString(arr1);
+        this.timeForm.get('etime').setValue(res);
+      }
+    });
+  }
+
+  getTimeString(arr): string {
+    const timeString = dateFns.format(
+      new Date(arr[0], arr[1] - 1, arr[2], arr[3], arr[4]),
+      'YYYY-MM-DD HH:mm:ss'
+    );
+    return timeString;
+  }
+}
+```
+
+> 基本完成
+
+![mdp](D:\dev\blog\mob-date-selector\mdp.jpg)
+
+颜色不太好看？改一下咯
+
+而且input设置了disabled后样式与正常的不一样，会让人感觉点不了的，改回来
+
+![input](D:\dev\blog\mob-date-selector\input.jpg)
+
+## 5. css(scss)
+
+```scss
+// 使用 ::ng-deep 即可选中组件内元素
+::ng-deep .ant-input-disabled { // ng-zorro ui框架自带的样式，改一下
+    background-color: #fff;
+    color:rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+}
+
+::ng-deep .date-selector-btn-box {
+    .date-selector-tab {
+        color: #1890ff;
+    }
+    .date-selector-tab-active {
+        background-color: #4FC3F7;
+        color: #fff;
+    }
+    background-color: #1890ff;
+}
+```
+
+## demo
+
+https://github.com/ZhongMingKun/mob-date-selector-test
