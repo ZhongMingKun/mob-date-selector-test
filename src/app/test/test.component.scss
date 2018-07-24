@@ -1,0 +1,19 @@
+.test {
+    padding: 24px;
+}
+::ng-deep .ant-input-disabled { // ng-zorro ui框架自带的样式，改一下
+    background-color: #fff;
+    color:rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+}
+
+::ng-deep .date-selector-btn-box {
+    .date-selector-tab {
+        color: #1890ff;
+    }
+    .date-selector-tab-active {
+        background-color: #4FC3F7;
+        color: #fff;
+    }
+    background-color: #1890ff;
+}

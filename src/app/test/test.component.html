@@ -1,0 +1,17 @@
+<div class="test">
+  <form nz-form [formGroup]="timeForm" nzLayout="horizontal">
+    <nz-form-item>
+      <nz-form-control>
+        <input id="stime-picker" nz-input placeholder="开始时间" formControlName="stime" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <input id="etime-picker" nz-input placeholder="结束时间" formControlName="etime" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <!-- 多个input需要对应多个Container -->
+  <div id="sdate-picker"></div>
+  <div id="edate-picker"></div>
+</div>
