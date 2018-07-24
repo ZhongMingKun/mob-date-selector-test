@@ -114,13 +114,13 @@ export class TestComponent implements OnInit, AfterViewInit {
 
 > 基本完成
 
-![mdp](D:\dev\blog\mob-date-selector\mdp.jpg)
+![mdp](https://github.com/ZhongMingKun/mob-date-selector-test/blob/master/mdp.jpg)
 
 颜色不太好看？改一下咯
 
 而且input设置了disabled后样式与正常的不一样，会让人感觉点不了的，改回来
 
-![input](D:\dev\blog\mob-date-selector\input.jpg)
+![input](https://github.com/ZhongMingKun/mob-date-selector-test/blob/master/input.jpg)
 
 ## 5. css(scss)
 
